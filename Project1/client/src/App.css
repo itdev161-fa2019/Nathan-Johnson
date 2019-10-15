@@ -1,0 +1,43 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 5vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 1vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  padding-top: 3rem;
+}
+
+
+header {
+  background-color: #282c34;
+  color: rgb(124, 106, 0);
+  padding: 1rem;
+  font-family: Apple Chancery, cursive;
+  font-size: calc(30px + 4vmin);
+}
+
+.app-hear p {
+  display: block;
+}
+
+.App-link {
+  color: #09d3ac;
+}
+
+.local {
+
+  font-family: Apple Chancery, cursive;
+  font-size: 4rem;
+
+}
