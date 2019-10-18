@@ -105,3 +105,19 @@ h3 {
     transform: none;
   }
   
+/* forms /*/
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  }
+
+input {
+      margin-bottom: 1rem;
+      width: 20rem;
+      padding: 1.5rem;
+      font-size: 1.8rem;
+      border: none;
+  }

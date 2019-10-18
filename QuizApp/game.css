@@ -14,7 +14,7 @@
   }
 
 
-.Choice-Prefix {
+.choice-prefix {
     padding: 1.5rem 2.5rem;
     background-color: blueviolet;
     color: whitesmoke;
@@ -22,4 +22,83 @@
 
 .choice-text {
     padding: 1.5rem;
+    width: 100%;
 }
+
+
+
+.incorrect {
+    background-color: red;
+}
+
+.correct {
+    background-color: greenyellow;
+}
+
+/* hud  */
+
+#hud {
+    display: flex;
+    justify-content: space-between;
+}
+
+.hud-prefix {
+    text-align: center;
+    font-size: 2rem;
+}
+
+.hud-main-text {
+    text-align: center;
+}
+
+#progressBar{
+    width: 30rem;
+    height: 4rem;
+    border: .4rem solid blue;
+
+}
+
+#progressBarFull {
+    height: 3.3rem;
+    background-color: blue;
+    width: 55%;
+
+}
+
+
+/* forms /*/
+
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    }
+
+input {
+        margin-bottom: 1rem;
+        width: 20rem;
+        padding: 1.5rem;
+        font-size: 1.8rem;
+        border: none;
+    }
+
+    /*loader*/
+
+    #loader {
+        border: 1.6rem solid white;
+        border-radius: 50%;
+        border-top: 1.6rem solid orange;
+        width: 12rem;
+        height: 12rem;
+        animation: spin .5s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100%{
+            transform: rotate(360deg);
+        }
+    }
