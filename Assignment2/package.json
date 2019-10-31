@@ -20,14 +20,14 @@
   "homepage": "https://github.com/itdev161-fa2019/Nathan-Johnson.git",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "config": "^3.2.3",
+    "config": "^3.2.4",
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "express-validator": "^6.2.0",
-    "mongoose": "^5.7.3"
+    "mongoose": "^5.7.7"
   },
   "devDependencies": {
     "concurrently": "^4.1.2",
-    "nodemon": "^1.19.3"
+    "nodemon": "^1.19.4"
   }
 }
