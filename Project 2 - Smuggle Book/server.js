@@ -3,9 +3,9 @@ import connectDatabase from './config/db';
 import {check, validationResult} from 'express-validator';
 import cors from 'cors';
 import bcrypt from 'bcryptjs';
+import User from './models/User';
 import jwt from 'jsonwebtoken';
 import config from 'config';
-import User from './models/User';
 import auth from './middleware/auth';
 
 
@@ -29,7 +29,7 @@ app.use(
  * @desc Test endpoint
  */
 app.get('/', (req,res) =>
-    res.send(`Welcome to Smugglebook, The smuggler's Network`)
+    res.send('http get request rent to root api endpoint')
 );
 
 /**
@@ -85,70 +85,71 @@ app.post(
                 await user.save();
 
                 // Generate and return a JWT token
-             returnToken(user, res);
+            returnToken(user, res);            
             } catch (error) {
                 res.status(500).send('Server xxx error');
-            }
-            }
+            }  
         }
+     }
  );
 
-/**
- * @route Get api/auth
- * @desc Authenticate user
- */
+ /**
+  * @route Get api/auth
+  * @desc Authenticate user
+  */
 
  app.get('/api/auth', auth, async (req, res) => {
      try {
          const user = await User.findById(req.user.id);
          res.status(200).json(user);
+         
      } catch (error) {
-         res.status(500).send('Unknown Server ERROR CODE BLUE !!!');
+         res.status(500).send('Unknown Server ERROR CODE RED!!');
      }
- });
+ }
+ );
 
 /**
- * @route Post api/login
- * @desc Login user
+ * @route POST api/login
+ * @desc
  */
 
  app.post(
      '/api/login',
      [
-         check('email', 'Please enter a valid email').isEmail(),
-         check('password', 'A password is required').exists(),
+         check('email','Please enter a valid email').isEmail(),
+         check('password', 'A Password is required').exists()
      ],
-
-async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()){
-        return res.status(422).json({ errors: errors.array()});
-    } else {
-        const { email, password } = req.body;
-    try {
-        let user = await User.findOne({ email: email });
-    if (!user) {
+   async (req, res) => {
+        const errors = validationResult(req);
+        if(!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        } else {
+            const { email, password } = req.body;
+            try {
+                //see if user exists
+                let user = await User.findOne ({email: email});
+                if (!user) {
+                    return res
+                    .status(400)
+                    .json({ errors: [{ msg: 'Invalid Email' }] });
+               }
+        // Check Password
+        const match = await bcrypt.compare(password, user.password);
+        if(!match) {
         return res
-        .status(400)
-        .json({ errors: [{ msg: 'invalid email '}]});
-    }
+                    .status(400)
+                    .json({ errors: [{ msg: 'Invalid Password' }] });
+     }
 
-    // check password
+     // Generate and return a JWT Token
+     returnToken(user, res);
 
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-        return res 
-        .status(400)
-        .json ({ errors: [{ msg: 'Invalid email or password'}]});
-    }
-
-    // Generate and return a jwt Token
-    returnToken(user, res);
     } catch (error) {
-        res.status(500).send('Server error');
+        res.status(500).send('Server error blue');
     }
     }
-    }
+   }
  );
 
  const returnToken = (user, res) => {
@@ -157,19 +158,19 @@ async (req, res) => {
              id: user.id
          }
      };
+
      jwt.sign(
          payload,
          config.get('jwtSecret'),
          { expiresIn: '10hr' },
          (err, token) => {
              if (err) throw err;
-             res.json({token: token})
+             res.json({ token: token });
          }
+ 
      );
  }
-
  
-
 //Connection listener
 
 const port = 5000;
