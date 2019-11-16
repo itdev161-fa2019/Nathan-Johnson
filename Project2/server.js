@@ -93,6 +93,32 @@ app.post(
      }
  );
 
+/**
+ * @route GET api/user
+ * @desc view users
+ */
+
+    
+app.get( '/api/users', auth, async (req,res) =>  {
+        const errors = validationResult(req);
+        if(!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        } 
+        try {
+            const users = await User.find();
+            res.send(users)
+
+
+        }catch (error) {
+            res.status(500).send('Unknown Server Error - Cannot find users!!');
+        }
+    
+}
+);
+     
+ 
+
+
  /**
   * @route Get api/auth
   * @desc Authenticate user
