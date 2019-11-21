@@ -38,8 +38,7 @@ const Login = ({ authenticateUser }) => {
     
 
     const body = JSON.stringify(newUser);
-    console.log(body);
-    const res = await axios.post('http://localhost:5000/api/login', body, config);
+      const res = await axios.post('http://localhost:5000/api/login', body, config);
 
     // Store user data and redirect 
     localStorage.setItem('token', res.data.token);

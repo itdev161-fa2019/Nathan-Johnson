@@ -9,6 +9,7 @@ import config from 'config';
 import auth from './middleware/auth';
 
 
+
 // initialize express application
 const app = express();
 
@@ -98,7 +99,6 @@ app.post(
  * @desc view users
  */
 
-    
 app.get( '/api/users', auth, async (req,res) =>  {
         const errors = validationResult(req);
         if(!errors.isEmpty()) {
@@ -106,8 +106,7 @@ app.get( '/api/users', auth, async (req,res) =>  {
         } 
         try {
             const users = await User.find();
-            res.send(users)
-
+           res.send(users)
 
         }catch (error) {
             res.status(500).send('Unknown Server Error - Cannot find users!!');

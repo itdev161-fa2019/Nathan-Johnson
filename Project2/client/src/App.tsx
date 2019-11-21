@@ -6,13 +6,18 @@ import Register from './components/Register/Register';
 import Login from './components/Login/Login';
 import Profile from './components/Profile/Profile';
 
+
+
 class App extends React.Component {
+
     state = {
       data: null,
       token: null,
       user: null,
       email: null,
+      profiles: []
     }
+    
 
 componentDidMount() {
   axios.get('http://localhost:5000')
@@ -58,6 +63,7 @@ authenticateUser = () => {
   }
 }
 
+
 getAllUsers = () => {
   const token = localStorage.getItem('token');
   if(!token) {
@@ -75,6 +81,14 @@ getAllUsers = () => {
       .then((response) => {
         let allUsers =response.data
         console.log(allUsers[0].name)
+        console.log(allUsers[1].name)
+        console.log(allUsers[2].name)
+        console.log(allUsers[3].name)
+        console.log(allUsers[4].name)
+
+        this.setState({ profiles: response.data })
+
+        
        return (allUsers[0].name)
 
       })
@@ -83,7 +97,9 @@ getAllUsers = () => {
         console.error(`Error logging in: ${error}`);
       })
   }
-}
+};
+
+
 
 
 logOut = () => {
@@ -94,10 +110,13 @@ logOut = () => {
 }
   
 render() {
-  let { user, data } = this.state;
+  let {user} = this.state;
   const authProps = {
     authenticateUser: this.authenticateUser,
   }
+
+  let {profiles} = this.state;
+  console.log(profiles)
 
   return (
     <Router>
@@ -130,7 +149,7 @@ render() {
         exact path="/profile">
         {user ?
           <React.Fragment>
-            <div> Hello {user} </div>
+            <div> Hello {user} {profiles} </div>
             <Profile {...authProps} />
           </React.Fragment> :
           <React.Fragment>
@@ -150,16 +169,19 @@ render() {
           exact path="/login"
            render={() => <Login {...authProps} />} />
         <Route 
-          exact path="/">
+          exact path="/"
+          
+          >
            {user ?
             <React.Fragment>
               <div> Hello {user} </div>
               
               <div> Welcome to Smugglebook, the social network for smugglers </div>
+
             </React.Fragment> :
             <React.Fragment>
             <div> Welcome to smugglebook, login to search for a smuggler </div>
-                        
+          
             </React.Fragment>      
           }
 
@@ -185,6 +207,9 @@ render() {
                  <button className="button is-info">
                     by name
                     </button>
+                    <div>
+                                       
+                    </div>
                   </form>
                 </section> </div>
               <div>  </div>
@@ -195,11 +220,12 @@ render() {
                         
             </React.Fragment>      
           }
-
+           
                 </div>
           </React.Fragment>
            </Route>
             </Switch>
+           
       </main>
       
     </div>
