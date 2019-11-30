@@ -45,6 +45,20 @@ exports.validateLoginData = (data) => {
     return {
         errors,
         valid: Object.keys(errors).length === 0 ? true : false
-    }
+    };
 
-}
+};
+
+exports.reduceUserDetails = (data) => {
+    let userDetails = {};
+    if(data.tagline != undefined) 
+    userDetails.tagline = data.tagline;
+    if(!isEmpty(data.website.trim())){
+        if(data.website.trim().substring(0, 4) !== 'http') {
+            userDetails.website = `http://${data.website.trim()}`;
+         } else userDetails.website = data.website;
+    };
+    if(!isEmpty(data.locations.trim())) userDetails.locations = data.locations;
+
+    return userDetails;
+};
