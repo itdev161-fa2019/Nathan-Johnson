@@ -35,7 +35,7 @@ let db = {
     notifications: [
         {
             recipient: 'user',
-            sender: 'john',
+            sender: 'johnson',
             read: 'true | false',
             screamId: 'jhbfsjhkdbfsdjlkfhbsdj',
             type: 'like | comment',
