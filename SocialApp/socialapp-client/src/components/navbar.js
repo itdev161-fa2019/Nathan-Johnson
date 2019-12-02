@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Link from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import '../App.css';
 // Material UI imports
 import AppBar from '@material-ui/core/AppBar';
@@ -13,8 +13,8 @@ export class navbar extends Component {
                 <AppBar>
                     <ToolBar>
                     <h3>SmuggleBook</h3>
-                        <div className="buttons">
-                        <Button color="inherit" component={Link} to='/home'>Home</Button>
+                        <div className="nav-container" >
+                        <Button color="inherit" component={Link} to='/'>Home</Button>
                         <Button color="inherit" component={Link} to='/login'>Login</Button>
                         <Button color="inherit" component={Link} to='/signup'>Signup</Button>
                         </div>
