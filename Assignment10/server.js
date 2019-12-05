@@ -30,7 +30,7 @@ app.use(
  * @desc Test endpoint
  */
 app.get('/', (req,res) =>
-    res.send('http get request rent to root api endpoint')
+    res.send('Welcome')
 );
 
 /**
@@ -38,24 +38,7 @@ app.get('/', (req,res) =>
  * @desc Register user
  */
 
-/**
- * @route GET api/user
- * @desc view users
- */
 
-app.get("/api/users", auth, async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
-    }
-    try {
-      const users = await User.find();
-      res.send(users);
-    } catch (error) {
-      res.status(500).send("Unknown Server Error - Cannot find users!!");
-    }
-  });
-  
 
 app.post(
     '/api/users', 
@@ -331,6 +314,25 @@ async (req, res) => {
          }
      );
  }
+
+/**
+ * @route GET api/user
+ * @desc view users
+ */
+
+app.get("/api/users", auth, async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    try {
+      const users = await User.find();
+      res.send(users);
+    } catch (error) {
+      res.status(500).send("Unknown Server Error - Cannot find users!!");
+    }
+  });
+  
 
 //Connection listener
 

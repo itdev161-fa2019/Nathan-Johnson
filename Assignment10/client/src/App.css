@@ -5,16 +5,6 @@
 .App-logo {
   height: 40vmin;
 }
-.image{
-  height: 8vw;
-  margin: 1%;
-}
-.webname{
-  font-size: calc(5px + 2vmin);
-  color: white;
-  text-decoration: none;
-  font-weight: 700;
-}
 
 .App-header {
   background-color: #03225f;
