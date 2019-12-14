@@ -4,7 +4,9 @@ import {
     CLEAR_ERRORS, 
     LOADING_UI,
     SET_UNAUTHENTICATED,
-    LOADING_USER
+    LOADING_USER,
+    MARK_NOTIFICATIONS_READ,
+    GET_USERS
 } from '../types';
 import axios from 'axios';
 
@@ -60,17 +62,32 @@ export const logoutUser = () => (dispatch) => {
 
 // get user data
 export const getUserData = () => (dispatch) => {
-    dispatch({type: LOADING_USER });
+    dispatch({ type: LOADING_USER });
     axios
-    .get('/user')
-    .then((res) => {
+      .get('/user')
+      .then((res) => {
         dispatch({
           type: SET_USER,
           payload: res.data
         });
-    })
-.catch(err => console.log(err));
-}
+      })
+      .catch((err) => console.log(err));
+  };
+  
+
+  // get All Users
+export const getAllUsers= () => (dispatch) => {
+    dispatch({ type: LOADING_USER });
+    axios
+      .get('/users')
+      .then((res) => {
+        dispatch({
+          type: GET_USERS,
+          payload: res.data
+        });
+      })
+      .catch((err) => console.log(err));
+  };
 
 // authorization helper function
 const setAuthorizationHeader = (token) => {
@@ -78,3 +95,37 @@ const setAuthorizationHeader = (token) => {
         localStorage.setItem('FBIdToken', FBIdToken);
         axios.defaults.headers.common['Authorization'] = FBIdToken;
 };
+
+// image uploader action 
+
+export const uploadImage = (formData) => (dispatch) => {
+    dispatch({ type: LOADING_USER})
+    axios.post('/user/image', formData)
+        .then(() => {
+            dispatch(getUserData());
+        })
+        .catch(err=> console.log(err));
+};
+
+// edit user details action 
+export const editUserDetails = (userDetails) => (dispatch) => {
+    dispatch({ type: LOADING_USER });
+    axios
+      .post('/user', userDetails)
+      .then(() => {
+        dispatch(getUserData());
+      })
+      .catch((err) => console.log(`${err} the ship is sinking`));  
+  };
+
+  // Mark Notifications read 
+  export const markNotificationsRead = (notificationIds) => (dispatch) => {
+    axios
+      .post('/notifications', notificationIds)
+      .then((res) => {
+        dispatch({
+          type: MARK_NOTIFICATIONS_READ
+        });
+      })
+      .catch((err) => console.log(err));
+  };

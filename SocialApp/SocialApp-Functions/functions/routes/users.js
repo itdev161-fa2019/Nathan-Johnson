@@ -95,19 +95,20 @@ exports.login = (req, res) =>{
         });
 }
 
-// Add user details:
-exports.addUserDetails = (req, res) =>{
+// Add user details
+exports.addUserDetails = (req, res) => {
     let userDetails = reduceUserDetails(req.body);
+
     db.doc(`/users/${req.user.handle}`)
-        .update(userDetails)
-        .then(() => {
-            return res.json({ message: `Details added succesfully`});
-        })
-        .catch(err =>{
-            console.error(err);
-            return res.status(500).json({error: err.code});
-        });
-};
+      .update(userDetails)
+      .then(() => {
+        return res.json({ message: 'Details added successfully' });
+      })
+      .catch((err) => {
+        console.error(err);
+        return res.status(500).json({ error: `${err.code} uh oh` });
+      });
+  };
 
 // Get any user details:
 exports.getUserDetails = (req, res) => {
@@ -182,6 +183,33 @@ exports.getAuthenticatedUser = (req, res) => {
         return res.status(500).json({ error: err.code });
     });
 };
+
+// get all user data 
+exports.getAllUsers = (req, res) => {
+    db
+    .collection('users')
+    .orderBy('createdAt', 'desc')
+    .get()
+    .then((data) => {
+      let users = [];
+      data.forEach((doc) => {
+        users.push({
+            userId: doc.data().userId,
+            bio: doc.data().bio,
+            userHandle: doc.data().handle,
+            createdAt: doc.data().createdAt,
+            whatsapp: doc.data().whatsapp,
+            location: doc.data().location,
+            userImage: doc.data().imageUrl
+        });
+      });
+      return res.json(users);
+    })
+    .catch((err) => {
+        console.error(err);
+    res.status(500).json({ error: er.code });
+    });
+}
 
 // Upload profile picture 
 exports.uploadImage = (req, res) => {

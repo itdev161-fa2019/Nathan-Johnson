@@ -16,8 +16,44 @@ import { connect } from 'react-redux';
 import { loginUser } from '../redux/actions/userActions';
 
 const styles = (theme) => ({
-    ...theme.rest
-  });
+   
+        typography: {
+          useNextVariants: true,
+        },
+        form: {
+          textAlign: 'center'
+        },
+        image: {
+            margin: '0px auto',
+            width: '100px',
+        },
+        pageTitle: {
+            margin: '0px auto',
+          
+        },
+        textField: {
+            margin: '5px auto',
+        },
+        button: {
+            marginTop: '20px',
+            position: "relative"
+        },
+        customError: {
+          color: 'red',
+            fontSize: '1rem',
+            marginTop: '10px',
+        },
+        small: {
+            color: 'textSecondary',
+            fontSize: '1rem',
+            margin: '20px auto',
+            height: '1875em',
+        },
+        progress: {
+            position: 'absolute',
+        },
+      }
+  );
 
 export class login extends Component {
     constructor(){

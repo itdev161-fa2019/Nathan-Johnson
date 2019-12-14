@@ -1,5 +1,7 @@
 const { db } = require('../utilities/admin');
 
+
+// get posts
 exports.getAllPosts = (req, res) => {
     db
       .collection('posts')
@@ -9,7 +11,7 @@ exports.getAllPosts = (req, res) => {
         let posts = [];
         data.forEach((doc) => {
           posts.push({
-              postsId: doc.id,
+              postId: doc.id,
               body: doc.data().body,
               userHandle: doc.data().userHandle,
               createdAt: doc.data().createdAt,
@@ -26,6 +28,7 @@ exports.getAllPosts = (req, res) => {
       });
   }
 
+ // Post post
 exports.postOnePost = (req, res) => {
     if(req.body.body.trim() === ''){
         return res.status(400).json({ body: 'Body must not be empty'})
@@ -44,7 +47,7 @@ exports.postOnePost = (req, res) => {
     .then((doc) => {
       const resPost = newPost;
       resPost.postId = doc.id;
-      res.json({ resPost });
+      res.json(resPost);
     })
     .catch((err) => {
       res.status(500).json({ error: "something went wrong" });
@@ -85,8 +88,8 @@ exports.getPost = (req, res) => {
 exports.commentOnPost = (req, res) => {
   if(req.body.body.trim() === '') return res.status(400).json({error: 'No comment'});
   var ImageUrl = "https://firebasestorage.googleapis.com/v0/b/social-media-app-f4e13.appspot.com/o/defaultProfile.jpg?alt=media&token=095ea752-bfdd-4f20-a3b4-24921a42af57"
-  if(req.user.imageURL){
-    ImageUrl = req.user.imageURL
+  if(req.user.imageUrl){
+    ImageUrl = req.user.imageUrl
   }
 
   const newComment = {
@@ -228,4 +231,30 @@ exports.deletePost = (req, res) => {
       console.error(err);
       return res.status(500).json({error: err.code })
     })
+}
+
+//get comments
+
+exports.getComments = (req, res) => {
+  db
+    .collection('comments')
+    .orderBy('createdAt', 'desc')
+    .get()
+    .then((data) => {
+      let commentsArray = [];
+      data.forEach((doc) => {
+        commentsArray.push({
+            postId: doc.data().postId,
+            body: doc.data().body,
+            userHandle: doc.data().userHandle,
+            createdAt: doc.data().createdAt,
+            userImage: doc.data().userImage
+        });
+      });
+      return res.json(commentsArray);
+    })
+    .catch((err) => {
+        console.error(err);
+    res.status(500).json({ error: er.code });
+    });
 }

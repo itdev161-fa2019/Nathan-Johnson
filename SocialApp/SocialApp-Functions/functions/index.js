@@ -1,6 +1,14 @@
 const functions = require("firebase-functions");
-const app = require('express')();
 const FBAuth = require('./utilities/fbAuth');
+
+var express = require('express');
+// Import the library:
+var cors = require('cors');
+
+var app = express();
+
+// Then use it before your routes are set up:
+app.use(cors());
 const { db } = require('./utilities/admin');
 
 const { 
@@ -10,7 +18,8 @@ const {
     commentOnPost,
     likePost,
     unLikePost,
-    deletePost
+    deletePost,
+    getComments
      } = require('./routes/posts');
 const { 
     signUp, 
@@ -19,24 +28,33 @@ const {
     addUserDetails,
     getAuthenticatedUser,
     getUserDetails,
-    markNotificationsRead
+    markNotificationsRead,
+    getAllUsers
          } = require('./routes/users');
 
 // POSTS ROUTES:
 // GET posts route 
 app.get('/posts', getAllPosts );
-// POST post route
+
+// POST post
 app.post('/post', FBAuth, postOnePost);
 // get post by ID
 app.get('/post/:postId', getPost);
 
+// get comments
+app.get('/comments', getComments);
+
+
 
 // Delete Post
 app.delete('/post/:postId', FBAuth, deletePost)
+
 // Like Post
-app.post('/post/:postId/like', FBAuth, likePost);
+app.get('/post/:postId/like', FBAuth, likePost);
+
 // Unlike post 
-app.post('/post/:postId/unlike', FBAuth, unLikePost);
+app.get('/post/:postId/unlike', FBAuth, unLikePost);
+
 // Add comment to a post
 app.post('/post/:postId/comment', FBAuth, commentOnPost);
 
@@ -55,6 +73,9 @@ app.get('/user', FBAuth, getAuthenticatedUser);
 app.get('/user/:handle', getUserDetails);
 // Mark notification as read
 app.post('/notifications', FBAuth, markNotificationsRead);
+
+//get all users 
+app.get('/users', FBAuth, getAllUsers);
 
 
 //https://baseurl.com/api/
@@ -141,7 +162,7 @@ exports.createNotificationOnComment = functions
         } else return true;
     });
 
-    exports.onPostDeleted = functions
+exports.onPostDeleted = functions
     .region('us-central1')
     .firestore.document(`/posts/{postId}`)
     .onDelete((snapshot, context) => {

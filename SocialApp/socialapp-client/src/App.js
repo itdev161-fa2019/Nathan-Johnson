@@ -24,16 +24,22 @@ import AuthRoute from './utilties/AuthRoute';
 import home from './pages/home';
 import login from './pages/login';
 import signup from './pages/signup';
+import user from './pages/user';
+import smugglers from './pages/smugglers'
+
 import axios from 'axios';
 
 const theme = createMuiTheme(themeFile)
+
+
+axios.defaults.baseURL = 'https://us-central1-social-media-app-f4e13.cloudfunctions.net/api';
+
 
 // go to login page if there is no token
 const token = localStorage.FBIdToken;
  if(token) {
   const decodedToken = jwtDecode(token);
-  console.log(decodedToken);
-  if(decodedToken.exp*1000 < Date.now()) {
+   if(decodedToken.exp*1000 < Date.now()) {
     store.dispatch(logoutUser())
     window.location.href ='/login';
   } else {
@@ -55,6 +61,13 @@ render() {
           <Route exact path="/" key='home' component={home}/> 
           <AuthRoute exact path="/login" key='login' component={login}/> 
           <AuthRoute exact path="/signup" key='signup' component={signup}/> 
+          <Route exact path="/users/:handle" component={user} />
+                <Route
+                  exact
+                  path="/users/:handle/post/:postId"
+                  component={user}
+                />
+            <Route exact path="/smugglers" key='smugglers' component={smugglers}/> 
         </Switch>
       </section>
     </Router>

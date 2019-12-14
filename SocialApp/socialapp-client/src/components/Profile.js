@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
+import EditDetails from '../components/EditDetails';
 
 //MUI 
 import Button from '@material-ui/core/Button';
@@ -15,11 +16,13 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 //redux
 import { connect } from 'react-redux';
-
+import { logoutUser, uploadImage } from '../redux/actions/userActions';
+import { getUserData } from '../redux/actions/userActions';
 // icons 
 import LocationOn from '@material-ui/icons/LocationOn';
-import LinkIcon from '@material-ui/icons/Link';
+import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import CalendarToday from '@material-ui/icons/CalendarToday';
+import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 
 
 //styles
@@ -39,7 +42,7 @@ const styles = (theme) => ({
         },
         '& .profile-image': {
           width: 225,
-          height: 150,
+          height: 200,
           objectFit: 'cover',
           maxWidth: '100%',
           borderRadius: '50%'
@@ -73,7 +76,7 @@ const styles = (theme) => ({
       }
 });
 
-export class Profile extends Component {
+class Profile extends Component {
     handleImageChange = (event) => {
         const image = event.target.files[0];
         const formData = new FormData();
@@ -84,15 +87,22 @@ export class Profile extends Component {
         const fileInput = document.getElementById('imageInput');
         fileInput.click();
       };
+      
+      handleLogout = () => {
+          this.props.logoutUser()
+      };
 
+  
+      
     render() {
-        const {classes, user: {credentials: { handle, createdAt, imageUrl, bio, website, location }, 
-        loading,
+        const {classes, user: {credentials: { handle, createdAt, imageUrl, bio, location, whatsapp }, 
+        
         authenticated
             }
         } = this.props;
 
-        let profileMarkup = !loading ? (
+
+        let profileMarkup = 
             authenticated ? (
             <Paper className ={classes.paper}>
                 <div className={classes.profile}>
@@ -105,8 +115,7 @@ export class Profile extends Component {
                     onChange={this.handleImageChange}
                   />
                   <Tooltip title="Edit Profile Picture" placement="top">
-                  <IconButton onClick={this.handleEditPicture} className="button"
-                  >
+                  <IconButton onClick={this.handleEditPicture} className="button">
                     <EditIcon color="primary"/>
                   </IconButton>
                   </Tooltip>
@@ -114,7 +123,7 @@ export class Profile extends Component {
                     <hr/>
                 <div className="profile-details">
                     <MuiLink component={Link} to={`/users/${handle}`} color="primary" variant="h5">
-                        {handle}
+                       <div>{handle}</div> 
                     </MuiLink>
                     <hr/>
                     {bio && <Typography variant="body2">"{bio}"</Typography>}
@@ -125,18 +134,28 @@ export class Profile extends Component {
                         <hr/>
                         </Fragment>
                     )}
-                    {website && (
+                    
+                       {whatsapp && (
                         <Fragment>
-                            <LinkIcon color="primary"/>
-                            <a href={website} target="_blank" rel="noopener noreferrer">
-                                {''}{website}
-                            </a>
+                            <WhatsAppIcon color="primary"/>
+                            <a href="https://www.whatsapp.com" target="_blank" rel="noopener noreferrer">
+                                {''}{whatsapp}
+                            </a> 
+                          
                             <hr/>
                         </Fragment>
-                    )}
+                          )}
+
                         <CalendarToday color="primary" />{' '}
                         <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
                     </div>
+
+                    <Tooltip title="logout" placement='top'>
+                        <IconButton onClick={this.handleLogout}>
+                            <KeyboardReturn color="primary"/>
+                        </IconButton>
+                    </Tooltip>
+                        <EditDetails/>
                 </div>
             </Paper>
             ):(
@@ -160,7 +179,7 @@ export class Profile extends Component {
                 </div>
                 </Paper>
             )
-        ) : (<p>loading profile.......</p>)
+       
 
         return profileMarkup;
     }
@@ -169,11 +188,15 @@ export class Profile extends Component {
 const mapStateToProps = (state) =>  ({
     user: state.user
 });
+
+const mapActionsToProps = { logoutUser, uploadImage, getUserData };
  
 Profile.propTypes = {
+    logoutUser: PropTypes.func.isRequired,
+    uploadImage: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired
 
 }
 
-export default connect(mapStateToProps)(withStyles(styles)(Profile))
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(Profile))

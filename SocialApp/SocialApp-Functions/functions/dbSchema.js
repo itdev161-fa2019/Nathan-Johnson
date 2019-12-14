@@ -6,11 +6,9 @@ let db = {
             handle: "userHandle",
             createdAt: '2019-11-26T16:00:48.486Z',
             imagesUrl: 'image/uniquenjskdfbnsdgb',
-            tagline: 'Anything for a price',
-            website: 'http://smuggle.com',
-            locations: ['Chicago'],
-            specialty: "Guns N Drugs",
-            whatsapp: "+99 593 34848 9448 40594"
+            bio: 'Anything for a price',
+            whatsapp: '6745856856',
+            location: 'Chicago'
 
     }
 ],
@@ -52,9 +50,9 @@ const userDetails = {
             handle: "userHandle",
             createdAt: '2019-11-26T16:00:48.486Z',
             imagesUrl: 'image/uniquenjskdfbnsdgb',
-            tagline: 'Anything for a price',
-            website: 'http://smuggle.com',
-            locations: ['Chicago'],
+            bio: 'Anything for a price',
+            whatsapp: 'http://s7457muggle.com',
+            location: 'Chicago',
             specialty: "Guns N Drugs",
             whatsapp: "+99 593 34848 9448 40594"
     },

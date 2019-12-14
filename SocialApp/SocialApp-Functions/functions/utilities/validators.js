@@ -6,10 +6,11 @@ else return false;
 }
 
 // check for empty string function
+
 const isEmpty = (string) => {
-    if(string.trim() === '') return true;
+    if (string.trim() === '') return true;
     else return false;
-}
+  };
 
 exports.validateSignupData = (data) => {
 
@@ -51,14 +52,9 @@ exports.validateLoginData = (data) => {
 
 exports.reduceUserDetails = (data) => {
     let userDetails = {};
-    if(data.tagline != undefined) 
-    userDetails.tagline = data.tagline;
-    if(!isEmpty(data.website.trim())){
-        if(data.website.trim().substring(0, 4) !== 'http') {
-            userDetails.website = `http://${data.website.trim()}`;
-         } else userDetails.website = data.website;
-    };
-    if(!isEmpty(data.locations.trim())) userDetails.locations = data.locations;
-
+    if (!isEmpty(data.bio.trim())) userDetails.bio = data.bio;
+    if (!isEmpty(data.whatsapp.trim())) userDetails.whatsapp = data.whatsapp;
+    if (!isEmpty(data.location.trim())) userDetails.location = data.location;
+  
     return userDetails;
-};
+  };
